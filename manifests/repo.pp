@@ -47,9 +47,14 @@ class elasticsearch::repo {
         include  => {
           src => false
         },
-      } -> exec { "apt-get update for elasticsearch":
-            command => '/usr/bin/apt-get update',
       }
+
+      exec { 'apt-get update for elasticsearch':
+        command   => '/usr/bin/apt-get update',
+        subscribe => Apt::Source['elasticsearch'],
+        refreshonly => true
+      }
+
     }
     'RedHat', 'Linux': {
       yumrepo { 'elasticsearch':
